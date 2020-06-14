@@ -17,10 +17,9 @@ class Textbox extends React.Component{
 
     onLoad(id) {
         //use id to get initial text via API
+        let hostName = window.location.hostname;
 
-        //NEED TO HANDLE CASE WHERE USER ID DOES NOT EXIST. HOW DO WE ADD?
-
-        fetch(`http://localhost:3000/api/${id}`)
+        fetch(`http://${hostName}:3000/api/${id}`)
         .then(response => response.text())
         .then(data => {
           this.setState({ userText: data })
@@ -30,6 +29,7 @@ class Textbox extends React.Component{
 
     handleChange(event) {
         let newText = event.target.value;
+        let hostName = window.location.hostname;
 
         if ( newText.length > 10000) {
           newText = newText.substring(0,10000);
@@ -40,7 +40,7 @@ class Textbox extends React.Component{
         newText = { "text" : newText };
 
         // patch to node server
-        fetch(`http://localhost:3000/api?id=${this.state.userId}`, {
+        fetch(`http://${hostName}:3000/api?id=${this.state.userId}`, {
           method: 'PUT',
           body: JSON.stringify(newText),
           headers: {
@@ -48,7 +48,7 @@ class Textbox extends React.Component{
           }
         }).then(res => {
             return res;
-        }).catch(err =>alert(err));
+        }).catch(err => err);
     }
 
     render() {
