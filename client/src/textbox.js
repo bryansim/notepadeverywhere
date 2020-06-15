@@ -19,7 +19,7 @@ class Textbox extends React.Component{
         //use id to get initial text via API
         let hostName = window.location.hostname;
 
-        fetch(`http://${hostName}:3000/api/${id}`)
+        fetch(`http://${hostName}/api/${id}`)
         .then(response => response.text())
         .then(data => {
           this.setState({ userText: data })
@@ -40,7 +40,7 @@ class Textbox extends React.Component{
         newText = { "text" : newText };
 
         // patch to node server
-        fetch(`http://${hostName}:3000/api?id=${this.state.userId}`, {
+        fetch(`http://${hostName}/api?id=${this.state.userId}`, {
           method: 'PUT',
           body: JSON.stringify(newText),
           headers: {
