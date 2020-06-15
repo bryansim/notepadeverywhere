@@ -7,6 +7,7 @@ import {
 import './App.css';
 
 import Textbox from './textbox.js';
+import Home from './home.js';
 // import Data from './data.json'; // does this go here!?!?!?!?
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
     <Router>
       <div className="App">
       <Switch>
+        <Route exact path="/" component = { Home }/>
         <Route path="/:id" children={<Textbox />} />
       </Switch>
       </div>
