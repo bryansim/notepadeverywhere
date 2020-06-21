@@ -52,8 +52,14 @@ class Textbox extends React.Component{
     }
 
     render() {
-        return <textarea type="text" name="userText" value={this.state.userText} 
+        let curText = this.state.userText;
+        if (curText) {
+          return <textarea type="text" name="userText" value={curText} 
           onChange={this.handleChange.bind(this)}/>
+        } else {
+          return <textarea type="text" name="userText" placeholder="Write something here!"
+          onChange={this.handleChange.bind(this)}/>
+        }
     }
 
 }

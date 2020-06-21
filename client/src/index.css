@@ -31,3 +31,7 @@ textarea {
 
   resize: none; /*remove the resize handle on the bottom right*/
 }
+
+textarea::placeholder {
+  color:lightgray;
+}
