@@ -3,7 +3,7 @@ const app = express();
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const {MongoClient} = require('mongodb');
-const uri = "***REMOVED***";
+const uri = "";
 const client = new MongoClient(uri); 
 
 const port = process.env.PORT || 5000;
