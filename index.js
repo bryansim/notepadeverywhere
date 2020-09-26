@@ -2,14 +2,41 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const bodyParser = require('body-parser');
-const port = process.env.PORT || 5000;
+const {MongoClient} = require('mongodb');
+const uri = "mongodb+srv://kopimongo:qP9N24LnNZ8ZCWYz@cluster0.n0d4f.mongodb.net/kopi?retryWrites=true&w=majority";
+const client = new MongoClient(uri); 
 
+const port = process.env.PORT || 5000;
+client.connect();
 app.use(bodyParser.json());
 
 app.get('/api/:id', (req, res) => {
-    let obj;
+    //let obj;
     let id = req.params.id;
-    obj = JSON.parse(fs.readFileSync('data.json'));
+
+    async function findUser(id) {    
+      try {
+          result = await client.db("kopi").collection("words").findOne({ name: id })
+            if (result) {
+              console.log(`Found a listing in the collection with the name '${id}':`);
+              } else {
+                console.log(`No listings found with the name '${id}'`);
+                const result = await client.db("kopi").collection("words").insertOne({"name":id});
+                console.log(`New listing created with the following id: ${result.insertedId}`);
+              }
+            } catch (e) {
+              console.error(e);
+            } finally {
+          return(result['text']);
+
+    }}
+
+   findUser(id).then(function(a){
+    res.send(a)
+    })
+  
+    
+    /*obj = JSON.parse(fs.readFileSync('data.json')); //old stuff when I was using a JSON to store everything
 
     try {
       return res.send(`${obj[id].userText}`);
@@ -26,7 +53,8 @@ app.get('/api/:id', (req, res) => {
         console.log('writing to ' + fileName);
       });
       return res.send('');
-    };
+    };*/
+
   });
    
   app.post('/api/', (req, res) => { 
@@ -34,12 +62,27 @@ app.get('/api/:id', (req, res) => {
   });
    
   app.put('/api', (req, res) => {
-
-    //NOW WE NEED TO CHANGE THE RAW TEXT TO HANDLE A JSON, SO WE CAN CAPTURE MULTILINE INPUT CHANGE HERE AS WELL AS IN TEXTBOX.JS
-
     let id = req.query.id;
     let text = req.body; //req.query.text;
 
+    async function updateUser(id_to_update, text_to_update) {
+      console.log(text_to_update)
+      try {
+        result = await client.db("kopi").collection("words")
+        .updateOne({ "name": id_to_update }, { $set: text_to_update} );
+        console.log(`${result.matchedCount} document(s) matched the query criteria.`);
+        console.log(`${result.modifiedCount} document(s) was/were updated.`);
+      } catch (e){
+        console.error(e);
+      } finally {
+      }
+  }
+
+  updateUser(id, text).then(function(a){
+    })
+
+    //NOW WE NEED TO CHANGE THE RAW TEXT TO HANDLE A JSON, SO WE CAN CAPTURE MULTILINE INPUT CHANGE HERE AS WELL AS IN TEXTBOX.JS
+    /*
     console.log(req.body);
     const fileName = './data.json';
     const file = require(fileName);
@@ -50,6 +93,7 @@ app.get('/api/:id', (req, res) => {
       console.log(JSON.stringify(file));
       console.log('writing to ' + fileName);
     });
+    */
 
     return res.send(`Received a PUT HTTP method ${id} ${text}`);
   });

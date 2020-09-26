@@ -8,7 +8,6 @@ import './App.css';
 
 import Textbox from './textbox.js';
 import Home from './home.js';
-// import Data from './data.json'; // does this go here!?!?!?!?
 
 function App() {
  

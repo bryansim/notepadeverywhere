@@ -16,14 +16,16 @@ class Textbox extends React.Component{
     }
 
     onLoad(id) {
-        //use id to get initial text via API
-        let hostName = window.location.hostname;
-
-        fetch(`http://${hostName}/api/${id}`)
-        .then(response => response.text())
-        .then(data => {
-          this.setState({ userText: data })
-        });
+      
+      //use id to get initial text via API
+      let hostName = window.location.hostname;
+      fetch(`http://${hostName}/api/${id}`) //need to replace hostname with localhost:3000 when testing
+      //fetch(`http://localhost:5000/api/${id}`)
+      .then(response => response.text())
+      .then(data => {
+        console.log('hi')
+        this.setState({ userText: data })
+      });
 
     }
 
@@ -41,6 +43,7 @@ class Textbox extends React.Component{
 
         // patch to node server
         fetch(`http://${hostName}/api?id=${this.state.userId}`, {
+        //fetch(`http://localhost:5000/api/?id=${this.state.userId}`, {
           method: 'PUT',
           body: JSON.stringify(newText),
           headers: {
