@@ -3,7 +3,7 @@ const app = express();
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const {MongoClient} = require('mongodb');
-const uri = "***REMOVED***";
+const uri = "mongodb+srv://kopimongo:qP9N24LnNZ8ZCWYz@cluster0.n0d4f.mongodb.net/kopi?retryWrites=true&w=majority";
 const client = new MongoClient(uri); 
 
 const port = process.env.PORT || 5000;
